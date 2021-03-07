@@ -2,16 +2,10 @@
 
 namespace WabLab\HtmlComponent\Modules\Bootstrap\V5\Component;
 
+use WabLab\HtmlComponent\Modules\Bootstrap\V5\Common\GridTier;
+
 class GridArea
 {
-
-    const GRID_TIER_XS = 'xs'; // <576px
-    const GRID_TIER_SM = 'sm'; // ≥576px
-    const GRID_TIER_MD = 'md'; // ≥768px
-    const GRID_TIER_LG = 'lg'; // ≥992px
-    const GRID_TIER_XL = 'xl'; // ≥1200px
-    const GRID_TIER_XXL = 'xxl'; // ≥1400px
-    const GRID_TIER_DEFAULT = 'default';
 
     const GUTTER_POS_LEFT = 'l';
     const GUTTER_POS_RIGHT = 'r';
@@ -21,51 +15,89 @@ class GridArea
     const GUTTER_POS_VERTICAL = 'y';
     const GUTTER_POS_ALL = 'all';
 
+    const ROW_VERTICAL_ALIGN_TOP = 'align-items-start';
+    const ROW_VERTICAL_ALIGN_MIDDLE = 'align-items-center';
+    const ROW_VERTICAL_ALIGN_BOTTOM = 'align-items-end';
+
+    const ROW_HOTIZONTAL_JUSTIFY_START = 'justify-content-start';
+    const ROW_HOTIZONTAL_JUSTIFY_CENTER = 'justify-content-center';
+    const ROW_HOTIZONTAL_JUSTIFY_END = 'justify-content-end';
+    const ROW_HOTIZONTAL_JUSTIFY_AROUND = 'justify-content-around';
+    const ROW_HOTIZONTAL_JUSTIFY_BETWEEN = 'justify-content-between';
+    const ROW_HOTIZONTAL_JUSTIFY_EVENLY = 'justify-content-evenly';
+
+    const COL_SELF_ALIGN_START = 'align-self-start';
+    const COL_SELF_ALIGN_CENTER = 'align-self-center';
+    const COL_SELF_ALIGN_END = 'align-self-end';
+
+
     protected array $areaIndexes = [];
     protected array $colSpan = [];
+    protected array $colOffset = [];
     protected array $rowColumnsGutters = [];
     protected array $rowColumnsSize = [];
 
-    public function addComponentToArea(int $row=0, int $col=0, $component):static
+    protected int $currentRow = 0;
+    protected int $currentCol = 0;
+
+
+    public function area(int $row = 0, int $col = 0):static
     {
-        $this->areaIndexes[$row][$col][] = $component;
+        $this->currentRow = $row;
+        $this->currentCol = $col;
+        return $this;
+    }
+
+    public function addComponentToArea($component):static
+    {
+        $this->areaIndexes[$this->currentRow][$this->currentCol][] = $component;
         $this->sortRowsAndColumns();
         return $this;
     }
 
-    public function setColumnSpan(int $row=0, int $col=0, $span = 12, $gridTier = self::GRID_TIER_DEFAULT):static
+    public function setColumnSpan(int $span = 12, $gridTier = GridTier::DEFAULT):static
     {
         // 0 span means auto
         if($span >12 || $span < 0) {
-            throw new \Exception('Span size should be between 0 and 12, 0 means auto');
+            throw new \Exception('Span size must be between 0 and 12, 0 means auto');
         }
-        $this->colSpan[$row][$col][$gridTier] = $span;
+        $this->colSpan[$this->currentRow][$this->currentCol][$gridTier] = $span;
         return $this;
     }
 
-    public function setRowColumnsSize(int $row=0, $size = 12, $gridTier = self::GRID_TIER_DEFAULT):static
+    public function setColumnOffset(int $offset = 12, $gridTier = GridTier::DEFAULT):static
+    {
+        // 0 span means auto
+        if($offset >12 || $offset < 0) {
+            throw new \Exception('Column offset must be between 0 and 12');
+        }
+        $this->colOffset[$this->currentRow][$this->currentCol][$gridTier] = $offset;
+        return $this;
+    }
+
+    public function setRowColumnsSize(int $size = 12, $gridTier = GridTier::DEFAULT):static
     {
         // 0 span means auto
         if($size >12 || $size < 0) {
-            throw new \Exception('Row columns size should be between 0 and 12, 0 means auto');
+            throw new \Exception('Row columns size must be between 0 and 12, 0 means auto');
         }
 
-        $this->rowColumnsSize[$row][$gridTier] = $size;
+        $this->rowColumnsSize[$this->currentRow][$gridTier] = $size;
         return $this;
     }
 
-    public function setRowColumnsGutter(int $row=0, int $size = 5, string $position = self::GUTTER_POS_ALL, $gridTier = self::GRID_TIER_DEFAULT) : static
+    public function setRowColumnsGutter(int $size = 5, string $position = self::GUTTER_POS_ALL, $gridTier = GridTier::DEFAULT) : static
     {
         if($size >5 || $size < 0) {
-            throw new \Exception('Gutter size should be between 0 and 5');
+            throw new \Exception('Gutter size must be between 0 and 5');
         }
-        $this->rowColumnsGutters[$row][$position][$gridTier] = $size;
+        $this->rowColumnsGutters[$this->currentRow][$position][$gridTier] = $size;
         return $this;
     }
 
-    public function getAreaComponents(int $row, int $col) : array
+    public function getAreaComponents() : array
     {
-        return ($this->areaIndexes[$row][$col] ?? []);
+        return ($this->areaIndexes[$this->currentRow][$this->currentCol] ?? []);
     }
 
     public function yieldRowIndexes()
