@@ -1,13 +1,8 @@
 <?php
 
-namespace WabLab\HtmlComponent;
+namespace WabLab\HtmlComponent\Component;
 
-
-use WabLab\HtmlBuilder\HTML\Tag\Body;
-use WabLab\HtmlBuilder\HTML\Tag\Head;
-use WabLab\HtmlBuilder\HTML\Tag\Html;
-
-class LayoutBuilder
+class Layout
 {
     protected string $pageTitle = '';
     protected string $baseUrl = '';
@@ -23,9 +18,7 @@ class LayoutBuilder
     protected array $mainComponents = [];
     protected array $footerComponents = [];
 
-    /**
-     * @return string
-     */
+
     public function getPageTitle(): string
     {
         return $this->pageTitle;
@@ -171,37 +164,6 @@ class LayoutBuilder
         return $this->mainComponents[] = $component;
     }
 
-
-    //
-    // LEVEL 0
-    //
-    public function build():Html
-    {
-        $html = Html::create()
-            ->addChild(
-                $this->initHeadElement()
-            )
-            ->addChild(
-                $this->initBodyElement()
-            );
-        return $html;
-    }
-
-
-    //
-    // LEVEL 1
-    //
-    protected function initHeadElement():Head
-    {
-        $head = Head::create();
-        return $head;
-    }
-
-    protected function initBodyElement():Body
-    {
-        $body = Body::create();
-        return $body;
-    }
 
 }
 
