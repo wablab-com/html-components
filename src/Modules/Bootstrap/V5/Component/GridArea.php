@@ -7,29 +7,6 @@ use WabLab\HtmlComponent\Modules\Bootstrap\V5\Common\GridTier;
 class GridArea
 {
 
-    const GUTTER_POS_LEFT = 'l';
-    const GUTTER_POS_RIGHT = 'r';
-    const GUTTER_POS_TOP = 't';
-    const GUTTER_POS_BOTTOM = 'b';
-    const GUTTER_POS_HORIZONTAL = 'x';
-    const GUTTER_POS_VERTICAL = 'y';
-    const GUTTER_POS_ALL = 'all';
-
-    const ROW_VERTICAL_ALIGN_TOP = 'align-items-start';
-    const ROW_VERTICAL_ALIGN_MIDDLE = 'align-items-center';
-    const ROW_VERTICAL_ALIGN_BOTTOM = 'align-items-end';
-
-    const ROW_HOTIZONTAL_JUSTIFY_START = 'justify-content-start';
-    const ROW_HOTIZONTAL_JUSTIFY_CENTER = 'justify-content-center';
-    const ROW_HOTIZONTAL_JUSTIFY_END = 'justify-content-end';
-    const ROW_HOTIZONTAL_JUSTIFY_AROUND = 'justify-content-around';
-    const ROW_HOTIZONTAL_JUSTIFY_BETWEEN = 'justify-content-between';
-    const ROW_HOTIZONTAL_JUSTIFY_EVENLY = 'justify-content-evenly';
-
-    const COL_SELF_ALIGN_START = 'align-self-start';
-    const COL_SELF_ALIGN_CENTER = 'align-self-center';
-    const COL_SELF_ALIGN_END = 'align-self-end';
-
 
     protected array $areaIndexes = [];
     protected array $colSpan = [];
